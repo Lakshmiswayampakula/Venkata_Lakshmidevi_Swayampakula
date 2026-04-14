@@ -28,7 +28,13 @@
             }}
           </picture>
         {% else %}
-          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          <img
+            src="{{ 'gift-guide-pattern.svg' | asset_url }}"
+            alt="Gift guide pattern"
+            width="1052"
+            height="400"
+            loading="lazy"
+          >
         {% endif %}
       </div>
 

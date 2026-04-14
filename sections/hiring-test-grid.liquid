@@ -9,42 +9,69 @@
   <div class="hiring-test-grid__items">
     {% for block in section.blocks %}
       {% assign selected_product = block.settings.product %}
-      {% if selected_product != blank %}
-        <article class="hiring-test-card" {{ block.shopify_attributes }}>
-          <div class="hiring-test-card__image">
-            {% if block.settings.image != blank %}
-              {{
-                block.settings.image
-                | image_url: width: 900
-                | image_tag: loading: 'lazy', sizes: '(max-width: 989px) 50vw, 33vw', alt: selected_product.title
-              }}
-            {% elsif selected_product.featured_image != blank %}
-              {{
-                selected_product.featured_image
-                | image_url: width: 900
-                | image_tag: loading: 'lazy', sizes: '(max-width: 989px) 50vw, 33vw', alt: selected_product.title
-              }}
-            {% else %}
-              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-            {% endif %}
-            <button
-              class="hiring-test-card__hotspot"
-              type="button"
+      {% assign fallback_image = '' %}
+      {% case forloop.index %}
+        {% when 1 %}
+          {% assign fallback_image = 'gift-grid-1.png' %}
+        {% when 2 %}
+          {% assign fallback_image = 'gift-grid-2.png' %}
+        {% when 3 %}
+          {% assign fallback_image = 'gift-grid-3.png' %}
+        {% when 4 %}
+          {% assign fallback_image = 'gift-grid-4.png' %}
+        {% when 5 %}
+          {% assign fallback_image = 'gift-grid-5.png' %}
+        {% when 6 %}
+          {% assign fallback_image = 'gift-grid-6.png' %}
+      {% endcase %}
+
+      <article class="hiring-test-card" {{ block.shopify_attributes }}>
+        <div class="hiring-test-card__image">
+          {% if block.settings.image != blank %}
+            {{
+              block.settings.image
+              | image_url: width: 900
+              | image_tag: loading: 'lazy', sizes: '(max-width: 989px) 50vw, 33vw', alt: selected_product.title
+            }}
+          {% elsif selected_product != blank and selected_product.featured_image != blank %}
+            {{
+              selected_product.featured_image
+              | image_url: width: 900
+              | image_tag: loading: 'lazy', sizes: '(max-width: 989px) 50vw, 33vw', alt: selected_product.title
+            }}
+          {% elsif fallback_image != blank %}
+            <img
+              src="{{ fallback_image | asset_url }}"
+              alt="Gift style look {{ forloop.index }}"
+              width="186"
+              height="186"
+              loading="lazy"
+            >
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+          <button
+            class="hiring-test-card__hotspot"
+            type="button"
+            {% if selected_product != blank %}
               aria-label="Open {{ selected_product.title }} details"
               data-hiring-open-popup
               data-product-handle="{{ selected_product.handle }}"
-              style="
-                --hotspot-top-desktop: {{ block.settings.hotspot_top }}%;
-                --hotspot-left-desktop: {{ block.settings.hotspot_left }}%;
-                --hotspot-top-mobile: {{ block.settings.hotspot_top_mobile }}%;
-                --hotspot-left-mobile: {{ block.settings.hotspot_left_mobile }}%;
-              "
-            >
-              +
-            </button>
-          </div>
-        </article>
-      {% endif %}
+            {% else %}
+              aria-label="Select product in customizer"
+              title="Select a product in this block to enable popup"
+            {% endif %}
+            style="
+              --hotspot-top-desktop: {{ block.settings.hotspot_top }}%;
+              --hotspot-left-desktop: {{ block.settings.hotspot_left }}%;
+              --hotspot-top-mobile: {{ block.settings.hotspot_top_mobile }}%;
+              --hotspot-left-mobile: {{ block.settings.hotspot_left_mobile }}%;
+            "
+          >
+            +
+          </button>
+        </div>
+      </article>
     {% endfor %}
   </div>
 </section>
