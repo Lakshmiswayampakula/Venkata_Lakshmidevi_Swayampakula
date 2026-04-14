@@ -1,0 +1,124 @@
+{{ 'hiring-test.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hiring-test.js' | asset_url }}" defer></script>
+
+<section class="hiring-test-page hiring-test-grid">
+  {% if section.settings.heading != blank %}
+    <h2 class="hiring-test-grid__heading">{{ section.settings.heading }}</h2>
+  {% endif %}
+
+  <div class="hiring-test-grid__items">
+    {% for block in section.blocks %}
+      {% assign selected_product = block.settings.product %}
+      {% if selected_product != blank %}
+        <article class="hiring-test-card" {{ block.shopify_attributes }}>
+          <div class="hiring-test-card__image">
+            {% if block.settings.image != blank %}
+              {{
+                block.settings.image
+                | image_url: width: 900
+                | image_tag: loading: 'lazy', sizes: '(max-width: 989px) 50vw, 33vw', alt: selected_product.title
+              }}
+            {% elsif selected_product.featured_image != blank %}
+              {{
+                selected_product.featured_image
+                | image_url: width: 900
+                | image_tag: loading: 'lazy', sizes: '(max-width: 989px) 50vw, 33vw', alt: selected_product.title
+              }}
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {% endif %}
+            <button
+              class="hiring-test-card__hotspot"
+              type="button"
+              aria-label="Open {{ selected_product.title }} details"
+              data-hiring-open-popup
+              data-product-handle="{{ selected_product.handle }}"
+              style="
+                --hotspot-top-desktop: {{ block.settings.hotspot_top }}%;
+                --hotspot-left-desktop: {{ block.settings.hotspot_left }}%;
+                --hotspot-top-mobile: {{ block.settings.hotspot_top_mobile }}%;
+                --hotspot-left-mobile: {{ block.settings.hotspot_left_mobile }}%;
+              "
+            >
+              +
+            </button>
+          </div>
+        </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hiring test grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tisso vison in the wild"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product block",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom image (optional)"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_top",
+          "label": "Hotspot top (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 58
+        },
+        {
+          "type": "range",
+          "id": "hotspot_left",
+          "label": "Hotspot left (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 72
+        },
+        {
+          "type": "range",
+          "id": "hotspot_top_mobile",
+          "label": "Hotspot top mobile (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "hotspot_left_mobile",
+          "label": "Hotspot left mobile (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 82
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Hiring test grid"
+    }
+  ]
+}
+{% endschema %}

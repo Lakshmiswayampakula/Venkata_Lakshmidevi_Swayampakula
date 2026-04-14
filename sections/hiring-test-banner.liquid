@@ -1,0 +1,168 @@
+{{ 'hiring-test.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hiring-test.js' | asset_url }}" defer></script>
+
+<section class="hiring-test-page">
+  <div class="hiring-test-banner">
+    <div class="hiring-test-banner__top">
+      <span class="hiring-test-banner__menu">&#9776;</span>
+      <h2 class="hiring-test-banner__logo"><strong>{{ section.settings.logo_first_word }}</strong> <span>{{ section.settings.logo_second_word }}</span></h2>
+      <p class="hiring-test-banner__intro">{{ section.settings.top_message }}</p>
+      {% if section.settings.top_button_text != blank %}
+        <a class="hiring-test-btn hiring-test-btn--accent hiring-test-banner__choose" href="{{ section.settings.top_button_link | default: '#' }}">
+          {{ section.settings.top_button_text }} <span>&#8594;</span>
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="hiring-test-banner__hero">
+      <div class="hiring-test-banner__media">
+        {% if section.settings.desktop_image != blank %}
+          <picture>
+            {% if section.settings.mobile_image != blank %}
+              <source media="(max-width: 989px)" srcset="{{ section.settings.mobile_image | image_url: width: 1000 }}">
+            {% endif %}
+            {{
+              section.settings.desktop_image
+              | image_url: width: 2400
+              | image_tag: loading: 'lazy', sizes: '(max-width: 989px) 100vw, 1200px'
+            }}
+          </picture>
+        {% else %}
+          {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {% endif %}
+      </div>
+
+      <div class="hiring-test-banner__content">
+        {% if section.settings.heading != blank %}
+          <h1 class="hiring-test-banner__title">{{ section.settings.heading }}</h1>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p class="hiring-test-banner__subtitle">{{ section.settings.subheading }}</p>
+        {% endif %}
+        <div class="hiring-test-banner__actions">
+          {% if section.settings.primary_button_text != blank %}
+            <a class="hiring-test-btn hiring-test-btn--primary" href="{{ section.settings.primary_button_link | default: '#' }}">
+              {{ section.settings.primary_button_text }} <span>&#8594;</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.bottom_strip_text != blank %}
+      <div class="hiring-test-banner__strip">{{ section.settings.bottom_strip_text }}</div>
+    {% endif %}
+  </div>
+</section>
+
+<div
+  class="hiring-test-popup"
+  data-hiring-popup
+  data-bonus-handle="{{ section.settings.bonus_product.handle | default: 'soft-winter-jacket' }}"
+>
+  <div class="hiring-test-popup__overlay" data-hiring-popup-overlay></div>
+  <div class="hiring-test-popup__dialog" role="dialog" aria-modal="true" aria-label="Product quick view">
+    <button class="hiring-test-popup__close" type="button" data-hiring-popup-close>&times;</button>
+    <form data-popup-form>
+      <div class="hiring-test-popup__layout">
+        <div class="hiring-test-popup__image" data-popup-image></div>
+        <div>
+          <h3 class="hiring-test-popup__title" data-popup-title></h3>
+          <div class="hiring-test-popup__price" data-popup-price></div>
+          <p class="hiring-test-popup__desc" data-popup-description></p>
+          <div data-popup-options></div>
+          <div class="hiring-test-popup__footer">
+            <button class="hiring-test-btn hiring-test-btn--primary" type="submit" data-popup-add>ADD TO CART</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hiring test banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "text",
+      "id": "logo_first_word",
+      "label": "Logo first word",
+      "default": "TISSO"
+    },
+    {
+      "type": "text",
+      "id": "logo_second_word",
+      "label": "Logo second word",
+      "default": "VISION"
+    },
+    {
+      "type": "text",
+      "id": "top_message",
+      "label": "Top center message",
+      "default": "Find the ideal gift for your loved ones."
+    },
+    {
+      "type": "text",
+      "id": "top_button_text",
+      "label": "Top button text",
+      "default": "CHOOSE GIFT"
+    },
+    {
+      "type": "url",
+      "id": "top_button_link",
+      "label": "Top button link"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Gift Guide"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover joy: Your ultimate holiday gift destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary button text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "bottom_strip_text",
+      "label": "Bottom strip text",
+      "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    },
+    {
+      "type": "product",
+      "id": "bonus_product",
+      "label": "Auto-add product (for Black + Medium)"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Hiring test banner"
+    }
+  ]
+}
+{% endschema %}

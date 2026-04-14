@@ -1,0 +1,392 @@
+.hiring-test-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 26px;
+}
+
+.hiring-test-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 30px;
+  border: 0;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.hiring-test-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  opacity: 0.94;
+}
+
+.hiring-test-btn--primary {
+  background: #000;
+  color: #fff;
+}
+
+.hiring-test-btn--accent {
+  background: #f6e53f;
+  color: #111;
+}
+
+.hiring-test-banner {
+  margin: 0;
+  background: #efefef;
+}
+
+.hiring-test-banner__top {
+  min-height: 55px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  border-bottom: 1px solid #dedede;
+  padding: 0 22px;
+}
+
+.hiring-test-banner__menu {
+  display: none;
+}
+
+.hiring-test-banner__logo {
+  margin: 0;
+  font-size: 37px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.hiring-test-banner__logo strong {
+  font-weight: 700;
+}
+
+.hiring-test-banner__logo span {
+  font-weight: 500;
+}
+
+.hiring-test-banner__intro {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.hiring-test-banner__choose {
+  justify-self: end;
+  min-height: 39px;
+  padding: 0 22px;
+}
+
+.hiring-test-banner__hero {
+  position: relative;
+  min-height: 560px;
+  overflow: hidden;
+}
+
+.hiring-test-banner__media,
+.hiring-test-banner__media picture,
+.hiring-test-banner__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hiring-test-banner__media {
+  position: absolute;
+  inset: 0;
+}
+
+.hiring-test-banner__media img {
+  object-fit: cover;
+}
+
+.hiring-test-banner__content {
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+  padding: 300px 0 0 48px;
+}
+
+.hiring-test-banner__title {
+  margin: 0;
+  font-size: 75px;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: #111;
+}
+
+.hiring-test-banner__subtitle {
+  margin: 18px 0 0;
+  font-size: 30px;
+  line-height: 1.34;
+  color: #222;
+  max-width: 500px;
+}
+
+.hiring-test-banner__actions {
+  margin-top: 34px;
+}
+
+.hiring-test-banner__strip {
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid #dfdfdf;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+.hiring-test-grid {
+  background: #efefef;
+  padding-top: 44px;
+  padding-bottom: 66px;
+}
+
+.hiring-test-grid__heading {
+  margin: 0 0 26px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 53px;
+  font-weight: 400;
+  color: #232323;
+}
+
+.hiring-test-grid__items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.hiring-test-card {
+  position: relative;
+  background: #ddd;
+  overflow: hidden;
+}
+
+.hiring-test-card__image {
+  position: relative;
+  aspect-ratio: 1 / 1;
+}
+
+.hiring-test-card__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hiring-test-card__hotspot {
+  position: absolute;
+  top: var(--hotspot-top-desktop);
+  left: var(--hotspot-left-desktop);
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.86);
+  color: #111;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 19px;
+  line-height: 1;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease;
+}
+
+.hiring-test-card__hotspot:hover {
+  transform: scale(1.08);
+}
+
+.hiring-test-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: none;
+}
+
+.hiring-test-popup.is-open {
+  display: block;
+}
+
+.hiring-test-popup__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.hiring-test-popup__dialog {
+  position: relative;
+  width: min(920px, calc(100% - 30px));
+  margin: 3vh auto;
+  max-height: 94vh;
+  overflow: auto;
+  border-radius: 0;
+  background: #fff;
+  padding: 28px;
+}
+
+.hiring-test-popup__close {
+  position: absolute;
+  right: 14px;
+  top: 8px;
+  border: 0;
+  background: transparent;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.hiring-test-popup__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 26px;
+}
+
+.hiring-test-popup__image img {
+  width: 100%;
+}
+
+.hiring-test-popup__title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+.hiring-test-popup__price {
+  margin: 8px 0 16px;
+  font-size: 22px;
+}
+
+.hiring-test-popup__desc {
+  margin: 10px 0 16px;
+  color: #444;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.hiring-test-popup__option {
+  margin-bottom: 12px;
+}
+
+.hiring-test-popup__option label {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.hiring-test-popup__option select {
+  width: 100%;
+  min-height: 43px;
+  padding: 0 10px;
+  border: 1px solid #d5d5d5;
+}
+
+.hiring-test-popup__footer {
+  margin-top: 20px;
+}
+
+@media (max-width: 989px) {
+  .hiring-test-page {
+    padding: 0 16px;
+  }
+
+  .hiring-test-banner__top {
+    min-height: 63px;
+    grid-template-columns: 24px 1fr;
+    gap: 10px;
+    padding: 0 16px;
+  }
+
+  .hiring-test-banner__menu {
+    display: inline-flex;
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .hiring-test-banner__logo {
+    font-size: 34px;
+    text-align: center;
+  }
+
+  .hiring-test-banner__intro,
+  .hiring-test-banner__choose {
+    display: none;
+  }
+
+  .hiring-test-banner__hero {
+    min-height: 500px;
+  }
+
+  .hiring-test-banner__content {
+    max-width: 100%;
+    padding: 46px 22px 0;
+    text-align: center;
+  }
+
+  .hiring-test-banner__title {
+    font-size: 66px;
+  }
+
+  .hiring-test-banner__subtitle {
+    margin-top: 10px;
+    font-size: 38px;
+    max-width: 100%;
+  }
+
+  .hiring-test-banner__actions {
+    margin-top: 24px;
+  }
+
+  .hiring-test-banner__strip {
+    font-size: 14px;
+    text-align: center;
+    padding: 0 12px;
+  }
+
+  .hiring-test-grid {
+    padding-top: 34px;
+    padding-bottom: 32px;
+  }
+
+  .hiring-test-grid__heading {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .hiring-test-grid__items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .hiring-test-card__hotspot {
+    top: var(--hotspot-top-mobile);
+    left: var(--hotspot-left-mobile);
+  }
+
+  .hiring-test-popup__dialog {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 20px 14px;
+  }
+
+  .hiring-test-popup__layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .hiring-test-popup__title {
+    font-size: 24px;
+  }
+}
