@@ -1,0 +1,322 @@
+{% comment %}
+  Ecomexperts hiring test — Product grid with hotspots and quick-view popup.
+  Six products + bundle product are configured in the theme editor.
+{% endcomment %}
+
+{{ 'ecomexperts-gift-guide.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="ee-grid-section shopify-section"
+  id="shopify-section-{{ section.id }}"
+  data-ecomexperts-grid
+  data-section-id="{{ section.id }}"
+>
+  <div class="ee-grid" role="list">
+    {% for i in (1..6) %}
+      {% assign pk = 'product_' | append: i %}
+      {% assign p = section.settings[pk] %}
+      {% assign ht = 'hotspot_' | append: i | append: '_top' %}
+      {% assign hl = 'hotspot_' | append: i | append: '_left' %}
+      {% assign hot_top = section.settings[ht] | default: 50 %}
+      {% assign hot_left = section.settings[hl] | default: 50 %}
+
+      <div class="ee-grid__cell" role="listitem" data-ee-slot="{{ i }}">
+        {% if p != blank %}
+          {% assign img = p.featured_image %}
+          {% if img != blank %}
+            <img
+              class="ee-grid__img"
+              src="{{ img | image_url: width: 1200 }}"
+              alt="{{ p.title | escape }}"
+              loading="lazy"
+              width="{{ img.width }}"
+              height="{{ img.height }}"
+            >
+          {% else %}
+            <div class="ee-grid__placeholder">{{ 'content.placeholder_image' | t }}</div>
+          {% endif %}
+
+          <button
+            type="button"
+            class="ee-grid__hotspot"
+            style="--ee-hot-y: {{ hot_top }}%; --ee-hot-x: {{ hot_left }}%;"
+            data-ee-open-popup
+            data-ee-slot-index="{{ i }}"
+            aria-haspopup="dialog"
+            aria-label="View product details — {{ p.title | escape }}"
+          >
+            <span class="ee-grid__hotspot-icon" aria-hidden="true"></span>
+          </button>
+        {% else %}
+          <div class="ee-grid__placeholder">
+            {{ section.settings.empty_slot_label | default: 'Select a product in the theme editor' }}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div
+    class="ee-modal"
+    data-ee-modal
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ee-modal-title-{{ section.id }}"
+  >
+    <div class="ee-modal__backdrop" data-ee-close-modal tabindex="-1"></div>
+    <div class="ee-modal__dialog">
+      <button type="button" class="ee-modal__close" data-ee-close-modal aria-label="{{ 'accessibility.close' | t }}">
+        ×
+      </button>
+      <div class="ee-modal__body">
+        <div class="ee-modal__media">
+          <img class="ee-modal__media-img" data-ee-modal-image src="" alt="" width="600" height="800" loading="lazy">
+        </div>
+        <div class="ee-modal__detail">
+          <h2
+            class="ee-modal__title"
+            id="ee-modal-title-{{ section.id }}"
+            data-ee-modal-title
+          ></h2>
+          <p class="ee-modal__price" data-ee-modal-price></p>
+          <div class="ee-modal__description rte" data-ee-modal-description></div>
+          <div class="ee-modal__variants" data-ee-modal-variants></div>
+          <p class="ee-modal__error" data-ee-modal-error role="status" aria-live="polite"></p>
+          <button type="button" class="ee-modal__add" data-ee-modal-add>
+            {{ section.settings.add_to_cart_label | default: 'ADD TO CART' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-ee-grid-json>
+    {% capture ee_grid_payload %}
+    {
+      "sectionId": {{ section.id | json }},
+      "moneyFormat": {{ shop.money_format | json }},
+      "currency": {{ cart.currency.iso_code | json }},
+      "bundleProductId": {% if section.settings.bundle_product != blank %}{{ section.settings.bundle_product.id | json }}{% else %}null{% endif %},
+      "bundleVariantId": {% if section.settings.bundle_product != blank %}{{ section.settings.bundle_product.selected_or_first_available_variant.id }}{% else %}null{% endif %},
+      "rows": [
+        {%- assign first_item = true -%}
+        {%- for i in (1..6) -%}
+          {%- assign pk = 'product_' | append: i -%}
+          {%- assign p = section.settings[pk] -%}
+          {%- if p != blank -%}
+            {%- unless first_item -%},{%- endunless -%}
+            {%- assign first_item = false -%}
+            {%- assign ht = 'hotspot_' | append: i | append: '_top' -%}
+            {%- assign hl = 'hotspot_' | append: i | append: '_left' -%}
+            {
+              "slot": {{ i }},
+              "hotspotTop": {{ section.settings[ht] | default: 50 }},
+              "hotspotLeft": {{ section.settings[hl] | default: 50 }},
+              "product": {{ p | json }}
+            }
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+    {% endcapture %}
+    {{ ee_grid_payload | strip_newlines }}
+  </script>
+</section>
+
+<script src="{{ 'ecomexperts-gift-guide.js' | asset_url }}" type="module"></script>
+
+{% schema %}
+{
+  "name": "Ecomexperts — Product grid",
+  "tag": "section",
+  "class": "section-ecomexperts-grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Products (six slots)"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_1_top",
+      "label": "Product 1 — hotspot vertical %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_1_left",
+      "label": "Product 1 — hotspot horizontal %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_2_top",
+      "label": "Product 2 — hotspot vertical %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_2_left",
+      "label": "Product 2 — hotspot horizontal %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product 3"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_3_top",
+      "label": "Product 3 — hotspot vertical %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_3_left",
+      "label": "Product 3 — hotspot horizontal %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product 4"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_4_top",
+      "label": "Product 4 — hotspot vertical %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_4_left",
+      "label": "Product 4 — hotspot horizontal %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Product 5"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_5_top",
+      "label": "Product 5 — hotspot vertical %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_5_left",
+      "label": "Product 5 — hotspot horizontal %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "product",
+      "id": "product_6",
+      "label": "Product 6"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_6_top",
+      "label": "Product 6 — hotspot vertical %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "hotspot_6_left",
+      "label": "Product 6 — hotspot horizontal %",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Bundle rule"
+    },
+    {
+      "type": "product",
+      "id": "bundle_product",
+      "label": "Auto-add product (e.g. Soft Winter Jacket)",
+      "info": "When a variant with options Black + Medium is added from the popup, this product is added as well."
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "empty_slot_label",
+      "label": "Empty slot message",
+      "default": "Choose a product for this tile"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_label",
+      "label": "Add to cart button",
+      "default": "ADD TO CART"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ecomexperts — Product grid"
+    }
+  ]
+}
+{% endschema %}
